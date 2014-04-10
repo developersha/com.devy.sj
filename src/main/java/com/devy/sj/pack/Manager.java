@@ -8,7 +8,7 @@ public class Manager {
 	
 	public Manager()
 	{
-		Days = new LinkedList<>();		
+		Days = new LinkedList<Day>();		
 	}
 	
 	public void addDay(Day d)

@@ -7,7 +7,8 @@ public class Item {
 	public int id;
 	
 	//Value of the item
-	public Object value; 
+	public String value; 
+	
 	
 	
 	

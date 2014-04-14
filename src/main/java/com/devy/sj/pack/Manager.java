@@ -19,7 +19,7 @@ public class Manager {
 		Days.add(d);		
 	}
 	
-	public void addToday()
+	void addToday()
 	{
 		//get current date
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -30,5 +30,16 @@ public class Manager {
 		d.id = currentDate;
 		
 		Days.addFirst(d);		
-	}	
+	}
+	
+	public void addDay(String date)
+	{
+		if (date == "today")
+			addToday();
+		else
+		{
+			Day day = new Day(date);
+			Days.add(day);
+		}
+	}
 }

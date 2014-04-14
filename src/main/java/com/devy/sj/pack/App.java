@@ -10,44 +10,80 @@ public class App {
 
 	// Application manager
 	static Manager mgr;
-	
-	//Console input reader
+
+	// Console input reader
 	static Scanner in;
 
 	public static void main(String[] args) {
-		mgr = new Manager();
 
 		System.out.println("Welcome to SJ! ");
-		System.out.println("Type <add> to create new day. ");
-		System.out.println("Type <item> to create new item for today. ");
-		System.out.println("Type <list> to view all days. ");
-		System.out.println("Type <exit> to exit the application. ");
 
-		in = new Scanner(System.in); 
+		mgr = new Manager();
+		in = new Scanner(System.in);
+		// in.useDelimiter(" ,");
+
 		while (in.hasNext()) {
-			String s = in.next(); 
+			String s = in.next();
 
-			// process input
-			switch (s) {
-			case "add":
-				addNewDay();
-				break;
-
-			case "item":
-				addNewItem();
-				break;
-
-			case "list":
-				viewList();
-				break;
-
-			case "exit":
-				exit();
-				break;
+			String[] inputArray = s.split(",");
+			Commands inputCommand = Commands.NON_EXISTING;
+			try {
+				inputCommand = Commands.valueOf(inputArray[0].toUpperCase());
+			} catch (IllegalArgumentException ex) {
+				// swallow this type of exception, as it's handled by
+				// NON_EXISTING value
 			}
+
+			processCommand(inputArray, inputCommand);
 		}
 	}
 
+	private static void processCommand(String[] inputArray,
+			Commands inputCommand) {
+		// process input
+		switch (inputCommand) {
+		case ADD:
+			addNewDay(inputArray);
+			break;
+
+		case ITEM:
+			addNewItem();
+			break;
+
+		case LIST:
+			viewList();
+			break;
+
+		case EXIT:
+			exit();
+			break;
+
+		case HELP:
+			displayHelp();
+			break;
+
+		case NON_EXISTING:
+			nonExistingCommand();
+			break;
+		}
+	}
+
+	// Display help screen
+	private static void displayHelp() {
+		System.out.println("<add> to create new day. ");
+		System.out.println("<item> to create new item for today. ");
+		System.out.println("<list> to view all days. ");
+		System.out.println("<exit> to exit the application. ");
+		System.out.println("<help> to display this screen. ");
+	}
+
+	// Handle non-existing command
+	private static void nonExistingCommand() {
+		System.out
+				.println("Incorrect command. Type -help- to see list of commands.");
+	}
+
+	// handle <exit> command
 	private static void exit() {
 		System.out.println("bye");
 		// close the scanner
@@ -55,23 +91,35 @@ public class App {
 		System.exit(0);
 	}
 
+	// handle <list> command
 	private static void viewList() {
 		System.out.println("List of days:");
 
-		if (mgr.Days.size() > 0) {
-			System.out.println("Day entry: "
-					+ mgr.Days.getFirst().Items.get(0).value);
-		} else {
+		if (mgr.Days.size() == 0)
 			System.out.println("  empty");
+
+		//display list of days
+		for (Day d : mgr.Days) {
+			System.out.println(String.format("Day: %s", d.id));
 		}
 	}
 
+	// handle <item> command
 	private static void addNewItem() {
 		System.out.println("Add new item:");
+		System.out.println("Type the text:");
 	}
 
-	private static void addNewDay() {
-		System.out.println("Add new day:");
-		mgr.addToday();
+	//handle <add> command
+	private static void addNewDay(String[] params) {
+
+		String date = "";
+
+		// parse parameters
+		if (params.length > 1 && params[1] != null)
+			date = params[1];
+
+		mgr.addDay(date);
+		System.out.println(String.format("Day added: %s", date));
 	}
 }

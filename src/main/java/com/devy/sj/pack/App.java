@@ -20,12 +20,11 @@ public class App {
 
 		mgr = new Manager();
 		in = new Scanner(System.in);
-		// in.useDelimiter(" ,");
 
 		while (in.hasNext()) {
-			String s = in.next();
+			String s = in.nextLine();
 
-			String[] inputArray = s.split(",");
+			String[] inputArray = s.split(" ");
 			Commands inputCommand = Commands.NON_EXISTING;
 			try {
 				inputCommand = Commands.valueOf(inputArray[0].toUpperCase());

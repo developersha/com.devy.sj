@@ -6,5 +6,6 @@ public enum Commands {
 	ITEM,
 	LIST,
 	EXIT,
-	HELP	
+	HELP, 
+	EXPORT	
 }

@@ -60,11 +60,23 @@ public class App {
 		case HELP:
 			displayHelp();
 			break;
+			
+		case EXPORT:
+			export();
+			break;
 
 		case NON_EXISTING:
 			nonExistingCommand();
 			break;
 		}
+	}
+
+	//export day into text file
+	private static void export() {
+		
+		//make sure we have at least one day in the list
+		if (mgr.Days.size() > 0)
+			mgr.Days.peekFirst().export();		
 	}
 
 	// Display help screen

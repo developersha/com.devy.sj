@@ -76,7 +76,13 @@ public class App {
 		
 		//make sure we have at least one day in the list
 		if (mgr.Days.size() > 0)
-			mgr.Days.peekFirst().export();		
+		{
+			Day day = mgr.Days.peekFirst();
+			if (day.export() == 0)
+				System.out.println("Export: successful. ");
+			else
+				System.out.println("Export: failed. ");
+		}
 	}
 
 	// Display help screen

@@ -6,6 +6,8 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
+import prop.PropertiesReader;
+
 //The class represents the day of the journal
 public class Day extends Item {
 
@@ -50,23 +52,34 @@ public class Day extends Item {
 	}
 	
 	//Export day info into text file
-	public void export()
+	//return 0 in case of successful export
+	//return 1 in case of error
+	public int export()
 	{
+		int result = 1;
 		//create new file
 		PrintWriter writer = null;
 		try {
-			//write file into project root directory
-			writer = new PrintWriter("Day.txt", "UTF-8" );			
-			writer.println(this.toString());
+			//read path for file from .properties file
+			PropertiesReader reader = new PropertiesReader();			
 			
-		} catch (FileNotFoundException e) {			
+			String fileName = reader.read("dayPath");
+						
+			//TODO: make sure folder exists >> fileName
+			
+			writer = new PrintWriter(fileName, "UTF-8" );			
+			writer.println(this.toString());	
+			result = 0;			
+		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
+			result = 1;			
 		}
 		finally
 		{
-			writer.close();
+			writer.close();			
 		}
+		return result;
 	}	
 }

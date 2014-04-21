@@ -2,15 +2,22 @@ package com.devy.sj.pack;
 
 import java.util.Scanner;
 
+import prop.FileUtils;
+import prop.PropertiesReader;
+import prop.PropertiesWriter;
+
 /**
  * Console application to display results
  * 
  */
 public class App {
 
+	// Configuration file name
+	static String propertiesFileName = "config.properties";
+
 	// Application manager
 	static Manager mgr;
-
+	
 	// Console input reader
 	static Scanner in;
 
@@ -33,12 +40,16 @@ public class App {
 				// NON_EXISTING value
 			}
 
-			processCommand(inputArray, inputCommand);
+			try {
+				processCommand(inputArray, inputCommand);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
 	private static void processCommand(String[] inputArray,
-			Commands inputCommand) {
+			Commands inputCommand) throws Exception {
 		// process input
 		switch (inputCommand) {
 		case ADD:
@@ -60,9 +71,21 @@ public class App {
 		case HELP:
 			displayHelp();
 			break;
-			
+
 		case EXPORT:
 			export();
+			break;
+
+		case CONFIG:
+			setConfig();
+			break;
+			
+		case VCONFIG:
+			viewConfigValues();
+			break;
+			
+		case ADDCONFIG:
+			addConfigKey();
 			break;
 
 		case NON_EXISTING:
@@ -71,14 +94,62 @@ public class App {
 		}
 	}
 
-	//export day into text file
-	private static void export() {
+	private static void addConfigKey() {
+		// TODO add new Key/Value
+		System.out.println(" Set key - value to add.");	
+	}
+
+	private static void viewConfigValues() {
+		System.out.println(" List of values from config file.");
+		try {
+			PropertiesReader reader = PropertiesReader.getInstance(propertiesFileName);
+			
+			for (String str:reader.readAll())
+			{
+				System.out.println(str);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		
-		//make sure we have at least one day in the list
-		if (mgr.Days.size() > 0)
-		{
+	}
+
+	private static void setConfig() {
+
+		// check if configuration file exists
+		// read setting
+		if (FileUtils.isExists(propertiesFileName)) {
+			System.out.println("Configuration file already exists.");
+			System.out.println(" Type 'vconfig' to see the values.");
+			System.out.println(" Type 'addconfig' to add new key/value.");
+			
+		} else {
+
+			// if not - create new one
+			try {
+				// prepare configuration file
+				PropertiesWriter writer = PropertiesWriter
+						.getInstance(propertiesFileName);
+				writer.write("dayPath", "C:/days/Day.txt");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	// export day into text file
+	private static void export() throws Exception {
+
+		// read path for file from .properties file
+		PropertiesReader reader = PropertiesReader
+				.getInstance(propertiesFileName);
+		String exportPath = reader.readByKey("dayPath");
+
+		// make sure we have at least one day in the list
+		if (mgr.Days.size() > 0) {
 			Day day = mgr.Days.peekFirst();
-			if (day.export() == 0)
+			if (day.export(exportPath) == 0)
 				System.out.println("Export: successful. ");
 			else
 				System.out.println("Export: failed. ");
@@ -90,6 +161,7 @@ public class App {
 		System.out.println("<add> to create new day. ");
 		System.out.println("<item> to create new item for today. ");
 		System.out.println("<list> to view all days. ");
+		System.out.println("<config> to set configuration file. ");
 		System.out.println("<exit> to exit the application. ");
 		System.out.println("<help> to display this screen. ");
 	}
@@ -115,7 +187,7 @@ public class App {
 		if (mgr.Days.size() == 0)
 			System.out.println("  empty");
 
-		//display list of days
+		// display list of days
 		for (Day d : mgr.Days) {
 			System.out.println(String.format("Day: %s", d.id));
 		}
@@ -127,7 +199,7 @@ public class App {
 		System.out.println("Type the text:");
 	}
 
-	//handle <add> command
+	// handle <add> command
 	private static void addNewDay(String[] params) {
 
 		String date = "";

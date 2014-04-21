@@ -6,8 +6,6 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
-import prop.PropertiesReader;
-
 //The class represents the day of the journal
 public class Day extends Item {
 
@@ -54,17 +52,12 @@ public class Day extends Item {
 	//Export day info into text file
 	//return 0 in case of successful export
 	//return 1 in case of error
-	public int export()
+	public int export(String fileName)
 	{
 		int result = 1;
 		//create new file
 		PrintWriter writer = null;
-		try {
-			//read path for file from .properties file
-			PropertiesReader reader = new PropertiesReader();			
-			
-			String fileName = reader.read("dayPath");
-						
+		try {						
 			//TODO: make sure folder exists >> fileName
 			
 			writer = new PrintWriter(fileName, "UTF-8" );			

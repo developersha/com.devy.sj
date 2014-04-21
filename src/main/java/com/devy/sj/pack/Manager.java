@@ -5,19 +5,14 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.LinkedList;
 
-import prop.PropertiesWriter;
-
 public class Manager {
 	
 	LinkedList<Day> Days;
 	
+	
 	public Manager()
 	{
 		Days = new LinkedList<Day>();
-		
-		//TODO: make sure properties file exists
-		PropertiesWriter writer = new PropertiesWriter();
-		writer.write();
 	}
 	
 	public void addDay(Day d)

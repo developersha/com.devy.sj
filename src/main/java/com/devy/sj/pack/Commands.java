@@ -7,5 +7,8 @@ public enum Commands {
 	LIST,
 	EXIT,
 	HELP, 
-	EXPORT	
+	EXPORT, 
+	CONFIG, 
+	VCONFIG, 
+	ADDCONFIG	 
 }

@@ -1,10 +1,15 @@
 package com.devy.sj.pack;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+
+import org.simpleframework.xml.Serializer;
+import org.simpleframework.xml.core.Persister;
 
 //The class represents the day of the journal
 public class Day extends Item {
@@ -75,4 +80,31 @@ public class Day extends Item {
 		}
 		return result;
 	}	
+	
+	public void exportXml(String fileName)
+	{
+		Serializer serializer = new Persister();
+		DayDTO example = new DayDTO();
+		File result = new File(fileName);
+
+		try {
+			serializer.write(example, result);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}		
+	}
+	
+	//import day data from text file
+	public Day importDay(String fileName)
+	{
+		
+		return null;
+	}
+	
+	//import list of days from text file
+	public LinkedList<Day> importDays(String fileName)
+	{
+		
+		return null;
+	}
 }

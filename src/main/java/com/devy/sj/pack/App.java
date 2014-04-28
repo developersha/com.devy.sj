@@ -149,11 +149,15 @@ public class App {
 		// make sure we have at least one day in the list
 		if (mgr.Days.size() > 0) {
 			Day day = mgr.Days.peekFirst();
+			//serialize to xml
+			day.exportXml("dayFile.xml");
+			//serialize to txt file
 			if (day.export(exportPath) == 0)
 				System.out.println("Export: successful. ");
 			else
 				System.out.println("Export: failed. ");
 		}
+		
 	}
 
 	// Display help screen
